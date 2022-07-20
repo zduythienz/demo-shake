@@ -50,26 +50,37 @@
 		</style>
 		<script type="text/javascript" src="https://cdn.rawgit.com/alexgibson/shake.js/master/shake.js"></script>
 		<script type="text/javascript">
-			function getRandomInt(min, max) {
-			  return Math.floor(Math.random() * (max - min + 1)) + min;
-			}
 
-			var shakeEvent = new Shake({threshold: 15});
-			shakeEvent.start();
-			window.addEventListener('shake', function(){
-				var element = document.getElementById("box");
-			    var r = getRandomInt(0, 255);
-			    var g = getRandomInt(0, 255);
-			    var b = getRandomInt(0, 255);
+    DeviceMotionEvent.requestPermission()
+    .then(response => {
+      if (response == 'granted') {
+        window.addEventListener('devicemotion', (e) => {
+          // do something with e
+        })
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
-			    element.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
-			}, false);
+        var shakeEvent = new Shake({threshold: 15});
+        shakeEvent.start();
+        window.addEventListener('shake', function(){
+          var element = document.getElementById("box");
+            var r = getRandomInt(0, 255);
+            var g = getRandomInt(0, 255);
+            var b = getRandomInt(0, 255);
 
-			//stop listening
-			function stopShake(){
-				shakeEvent.stop();
-			}
+            element.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+        }, false);
 
+        //stop listening
+        function stopShake(){
+          shakeEvent.stop();
+        }
+
+      }
+    })
+    .catch(console.error)
+			
 			if(!("ondevicemotion" in window)){alert("Not Supported");}
 		</script>
 	</head>
