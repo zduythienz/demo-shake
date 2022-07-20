@@ -50,6 +50,9 @@
 		</style>
 		<script type="text/javascript" src="https://cdn.rawgit.com/alexgibson/shake.js/master/shake.js"></script>
 		<script type="text/javascript">
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
     DeviceMotionEvent.requestPermission()
     .then(response => {
@@ -57,9 +60,6 @@
         window.addEventListener('devicemotion', (e) => {
           // do something with e
         })
-        function getRandomInt(min, max) {
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
 
         var shakeEvent = new Shake({threshold: 15});
         shakeEvent.start();
