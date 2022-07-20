@@ -53,41 +53,47 @@
         function getRandomInt(min, max) {
           return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+        function onClick() {
+          // feature detect
+          if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission()
+              .then(permissionState => {
+                if (permissionState === 'granted') {
+                  // window.addEventListener('devicemotion', () => {});
+                  var shakeEvent = new Shake({threshold: 15});
+                  shakeEvent.start();
+                  window.addEventListener('shake', function(){
+                    var element = document.getElementById("box");
+                      var r = getRandomInt(0, 255);
+                      var g = getRandomInt(0, 255);
+                      var b = getRandomInt(0, 255);
 
-    DeviceMotionEvent.requestPermission()
-    .then(response => {
-      if (response == 'granted') {
-        window.addEventListener('devicemotion', (e) => {
-          // do something with e
-        })
+                      element.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+                  }, false);
 
-        var shakeEvent = new Shake({threshold: 15});
-        shakeEvent.start();
-        window.addEventListener('shake', function(){
-          var element = document.getElementById("box");
-            var r = getRandomInt(0, 255);
-            var g = getRandomInt(0, 255);
-            var b = getRandomInt(0, 255);
-
-            element.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
-        }, false);
-
-        //stop listening
-        function stopShake(){
-          shakeEvent.stop();
+                  //stop listening
+                  function stopShake(){
+                    shakeEvent.stop();
+                  }
+                }
+              })
+              .catch(console.error);
+          } else {
+            // handle regular non iOS 13+ devices
+          }
         }
 
-      }
-    })
-    .catch(console.error)
 			
 			if(!("ondevicemotion" in window)){alert("Not Supported");}
 		</script>
 	</head>
 	<body>
+    <button id="btnClick">aaaaaa</button>
 		Shake to change color of the box
 		<div id="box"></div>
 		<script type="text/javascript">
+      myAnchor = document.getElementById("btnClick");
+myAnchor.onclick = onClick
 			var element = document.getElementById("box");
 			var r = getRandomInt(0, 255);
 			var g = getRandomInt(0, 255);
